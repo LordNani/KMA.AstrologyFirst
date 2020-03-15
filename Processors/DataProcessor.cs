@@ -10,8 +10,9 @@ namespace pr_1_Gaivoronskyi.Processors
                                      "Dragon", "Snake",   "Horse", "Goat" };
     public int calculateAge(DateTime dateOfBirth)
     {
+#if DEBUG
       Thread.Sleep(500); // testing async
-
+#endif
       if (DateTime.Today.DayOfYear == dateOfBirth.DayOfYear)
         MessageBox.Show("Happy birthday! ",
                         "Oops!",
@@ -29,7 +30,9 @@ namespace pr_1_Gaivoronskyi.Processors
 
     public String calculateSignEast(DateTime dateOfBirth)
     {
-      Thread.Sleep(1000); // testing async
+#if DEBUG
+      Thread.Sleep(700); // testing async
+#endif
       String result = eastSignArr[dateOfBirth.Year % 12];
       return result;
     }
@@ -127,7 +130,7 @@ namespace pr_1_Gaivoronskyi.Processors
           break;
         }
       }
-      
+
       return result;
     }
   }
