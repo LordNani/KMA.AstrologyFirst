@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System;
 using pr_1_Gaivoronskyi.Tools;
 using pr_1_Gaivoronskyi.Models;
+using System.Threading.Tasks;
 using pr_1_Gaivoronskyi.Processors;
 
 namespace pr_1_Gaivoronskyi.ViewModels
@@ -63,20 +64,27 @@ namespace pr_1_Gaivoronskyi.ViewModels
       {
         return _submitDate ??(
           _submitDate = new RelayCommand<object>(o => {
-            // MessageBox
-            //    .Show
-            //        ($"Date picked: {BirthDate}");
-            int userAge = _processor.calculateAge(_pickedDate);
-            if (userAge != -1) {
-              Age = userAge;
-              WesternSign = _processor.calculateSignWest(_pickedDate);
-              EasternSign = _processor.calculateSignEast(_pickedDate);
-            }
+              // MessageBox
+              //    .Show
+              //        ($"Date picked: {BirthDate}");
+              calculateAll();
           }, CanExecuteCommand));
       }
     }
 
 #endregion
+
+        private async void calculateAll()
+        {
+            int userAge = await Task.Run(() => _processor.calculateAge(_pickedDate));
+
+            if (userAge != -1)
+            {
+                Age = userAge;
+                WesternSign = await Task.Run(() => _processor.calculateSignWest(_pickedDate));
+                EasternSign = await Task.Run(() => _processor.calculateSignEast(_pickedDate));
+            }
+        }
 
     public bool CanExecuteCommand(object o)
     {
